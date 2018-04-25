@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Load React and React DOM to help with lifecycle and state management -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+    <!-- Load Babel to transpile ES6 to browser-compatible JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+    <!-- Load Plotly to build our plot, we could substitue this for other 3rd party libraries -->
+    <script src="plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class BarChart extends React.Component {
+        constructor() {
+          super();
+          // Set default values for any user-configurable options
+
+          //*********************************
+          //    BEGINNING OF CODE CHANGES
+          //
+          //  Task: The 'data' variable needs to be changed to make this work.
+          //  Complete the code changes in the 'componentDidMount()' function
+          //  before touching this.
+          // *********************************
+
+          this.state = {
+            resultLimit: "All",
+            title: "Please Change the Title",
+            data: null,
+          };
+
+          // *********************************
+          //    END OF CODE CHANGES
+          // *********************************
+
+          // Initialize the DOM element, we'll be using this as a render target
+          this._graphElt = null;
+          // We hook this up to an event listener to handle dynamic resizing
+          this._resizeCallback = this.resizeGraph.bind(this);
+        }
+        componentDidMount() {
+          Plotly.newPlot(this._graphElt, this.constructData(), this.fetchLayout());
+          window.addEventListener('resize', this._resizeCallback);
+
+          //*********************************
+          //    BEGINNING OF CODE CHANGES
+          //
+          //  Task: We want this.state.data to contain data from the server API
+          //  '/get_data' endpoint. Make a call out to the endpoint and set
+          //  the value rn state to the result
+          // *********************************
+
+
+          // *********************************
+          //    END OF CODE CHANGES
+          // *********************************
+        }
+        componentDidUpdate() {
+          Plotly.newPlot(this._graphElt, this.constructData(), this.fetchLayout());
+        }
+        componentWillUnmount() {
+          // In development this won't matter
+          // In production we switch between graphs and want to remove unused listeners
+          window.removeEventListener('resize', this._resizeCallback);
+        }
+        resizeGraph() {
+          // Plotly has a convinient built in resizing function
+          // Other libraires may require more manual control
+          Plotly.Plots.resize(this._graphElt);
+        }
+
+        constructData() {
+          const { resultLimit, data } = this.state;
+
+          //*********************************
+          //    BEGINNING OF CODE CHANGES
+
+          //  Task: The 'data' variable defined above contains the results from
+          //  your API call. Now you need to use the contents and replace the
+          //  values for 'labels' and 'values' below.
+          // *********************************
+
+          const labels = ['hello', 'world'];
+          const values = [10, 20];
+
+          // *********************************
+          //    END OF CODE CHANGES
+          // *********************************
+
+          return [{
+            x: parseInt(resultLimit) ? labels.slice(0, resultLimit) : labels,
+            y: parseInt(resultLimit) ? values.slice(0, resultLimit) : values,
+            type: 'bar'
+          }];
+        }
+
+        fetchLayout() {
+          return { title: this.state.title };
+        }
+        //
+        handleChange(property, e) {
+          // Using computed property keys, we're able to write one handler for all configuration
+          // For checkboxes you'll need an additional check to toggle the value
+          this.setState({ [property]: e.target.value });
+        }
+        renderDropdownSetting() {
+          return (
+            <div className="setting-control">
+              <label>Result Limit: </label>
+              {/* The string here has to exactly match our properties in state */}
+              <select onChange={this.handleChange.bind(this, 'resultLimit')} defaultValue="All">
+                <option value="1">1</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="All">All</option>
+              </select>
+            </div>
+          );
+        }
+        renderTitleSetting() {
+          return (
+            <div className="setting-control">
+              <label>Title: </label>
+              {/* The string here has to exactly match our properties in state */}
+               <input type="text" value={this.state.title} onChange={this.handleChange.bind(this, 'title')} />
+            </div>
+          );
+        }
+        render() {
+          return (
+            <div>
+              <div ref={(ref) => { this._graphElt = ref; }}></div>
+              {this.renderDropdownSetting()}
+              {this.renderTitleSetting()}
+            </div>
+          );
+        }
+      }
+      ReactDOM.render( <BarChart />, document.getElementById('root'));
+    </script>
+    <!-- In production we'll use dedicated CSS files -->
+    <style>
+      .setting-control {
+        position: relative;
+        left: 30px;
+      }
+      select, option {
+        font-size: 12px;
+      }
+      input {
+        margin: 5px;
+        padding: 10px;
+        font-size: 12px;
+        width: 300px;
+      }
+    </style>
+  </body>
+</html>
