@@ -20,7 +20,8 @@
           //*********************************
           //    BEGINNING OF CODE CHANGES
           //
-          //  Task: The 'data' variable needs to be changed to make this work.
+          //  Step 2: The 'data' variable in the state object needs to be initialized.
+          //
           //  Complete the code changes in the 'componentDidMount()' function
           //  before touching this.
           // *********************************
@@ -47,11 +48,15 @@
           //*********************************
           //    BEGINNING OF CODE CHANGES
           //
-          //  Task: We want this.state.data to contain data from the server API
+          //  Step 1: We want this.state.data to contain data from the server API
           //  '/get_data' endpoint. Make a call out to the endpoint and set
           //  the value rn state to the result
           // *********************************
 
+          fetch('....')
+            .then(res => res.json())
+            .then(data => this.setState({ data }))
+            .catch(error => console.log(error));
 
           // *********************************
           //    END OF CODE CHANGES
@@ -77,7 +82,7 @@
           //*********************************
           //    BEGINNING OF CODE CHANGES
 
-          //  Task: The 'data' variable defined above contains the results from
+          //  Step 3: The 'data' variable defined above contains the results from
           //  your API call. Now you need to use the contents and replace the
           //  values for 'labels' and 'values' below.
           // *********************************
@@ -140,7 +145,7 @@
       }
       ReactDOM.render( <BarChart />, document.getElementById('root'));
     </script>
-    <!-- In production we'll use dedicated CSS files -->
+    <!-- In production we'd use dedicated CSS files -->
     <style>
       .setting-control {
         position: relative;
