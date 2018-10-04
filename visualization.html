@@ -17,24 +17,11 @@
           super();
           // Set default values for any user-configurable options
 
-          //*********************************
-          //    BEGINNING OF CODE CHANGES
-          //
-          //  Step 2: The 'data' variable in the state object needs to be initialized.
-          //
-          //  Complete the code changes in the 'componentDidMount()' function
-          //  before touching this.
-          // *********************************
-
           this.state = {
             resultLimit: "All",
             title: "Please Change the Title",
-            data: null,
+            data: [],
           };
-
-          // *********************************
-          //    END OF CODE CHANGES
-          // *********************************
 
           // Initialize the DOM element, we'll be using this as a render target
           this._graphElt = null;
@@ -82,7 +69,7 @@
           //*********************************
           //    BEGINNING OF CODE CHANGES
 
-          //  Step 3: The 'data' variable defined above contains the results from
+          //  Step 2: The 'data' variable defined above contains the results from
           //  your API call. Now you need to use the contents and replace the
           //  values for 'labels' and 'values' below.
           // *********************************
